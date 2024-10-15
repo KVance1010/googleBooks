@@ -1,5 +1,4 @@
 import express from 'express';
-import path from 'node:path';
 import db from './config/connection.js';
 import routes from './routes/index.js';
 
@@ -11,7 +10,11 @@ app.use(express.json());
 
 // if we're in production, serve client/build as static assets
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../../client/dist')));
+  app.use(express.static('../client/dist'));
+
+  app.get('*', (_req, res) => {
+   res.sendFile('../client/dist/index.html');
+ });
 }
 
 app.use(routes);
